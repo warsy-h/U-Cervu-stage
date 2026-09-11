@@ -799,6 +799,163 @@ svg.bloom-lg {
   font-weight: 500;
 }
 
+/* ── Rendus ─────────────────────────────────────────────────────── */
+.rendus-subhead {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.6vw, 1.95rem);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--accent-deep);
+  margin: 3.2rem 0 0.8rem;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.rendus-subhead:first-of-type { margin-top: 1.5rem; }
+
+.rendus-subhead svg.bloom {
+  width: 0.65em;
+  height: 0.65em;
+  color: var(--accent);
+  opacity: 0.7;
+  font-style: normal;
+}
+
+.rendus-piece {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 2.2rem;
+  margin-top: 2.2rem;
+  border-top: 1px solid var(--rule);
+}
+
+.rendus-subhead + .rendus-piece {
+  border-top: none;
+  padding-top: 0.4rem;
+  margin-top: 0.8rem;
+}
+
+.rendus-img, .rendus-slot {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.2rem;
+}
+
+.rendus-slot { color: var(--ink-3); }
+
+.rendus-slot--landscape { max-width: 100%; }
+.rendus-slot--portrait { max-width: 62%; }
+.rendus-slot--poster { max-width: 55%; align-self: flex-start; }
+
+.rendus-caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.98rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-bottom: 1.3rem;
+  max-width: 55ch;
+}
+
+.rendus-text {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.85;
+  max-width: 60ch;
+  margin-bottom: 1.4rem;
+}
+
+.rendus-text em { font-style: italic; color: var(--accent-deep); font-weight: 500; }
+
+.rendus-link {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+  transition: color 0.2s;
+}
+
+.rendus-link:hover { color: var(--ink); }
+.rendus-link .arrow { display: inline-block; transition: transform 0.3s var(--ease); font-family: var(--font-serif); font-size: 1.15em; font-style: italic; }
+.rendus-link:hover .arrow { transform: translateX(6px); }
+
+.poster-label {
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  display: block;
+  padding-bottom: 1rem;
+}
+
+/* Video */
+.video-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.video-wrap--horizontal { aspect-ratio: 16 / 9; }
+
+.video-wrap--vertical {
+  aspect-ratio: 9 / 16;
+  max-width: 360px;
+}
+
+.video-wrap iframe,
+.video-wrap video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: transparent;
+}
+
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--ink-3);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  gap: 12px;
+}
+
+.video-placeholder svg.bloom {
+  width: 0.9em;
+  height: 0.9em;
+  color: var(--accent);
+  opacity: 0.65;
+}
+
 /* ── Petals & noise ─────────────────────────────────────────────── */
 .petals {
   position: fixed;
@@ -918,13 +1075,15 @@ svg.bloom-lg {
   .story-numeral { font-size: clamp(7rem, 30vw, 12rem); opacity: 0.06; right: -0.4rem; }
   .learnings li { grid-template-columns: 42px 1fr; column-gap: 14px; }
   .cascade li { grid-template-columns: 44px 1fr; column-gap: 12px; }
+  .rendus-slot--portrait, .rendus-slot--poster { max-width: 100%; }
+  .video-wrap--vertical { max-width: 100%; }
 }
 
 @media (max-width: 500px) {
   body { font-size: 17.5px; }
   .topnav-inner { padding: 14px 18px 12px; }
   .mark { font-size: 1.1rem; }
-  .tab { font-size: 0.72rem; padding: 6px 12px; letter-spacing: 0.14em; }
+  .tab { font-size: 0.68rem; padding: 6px 9px; letter-spacing: 0.12em; }
   .theme-btn { font-size: 0.72rem; }
   .spread, .spread--wide, .colophon { padding: 0 20px; }
   .hero { padding: 130px 0 40px; }
@@ -1021,6 +1180,7 @@ svg.bloom-lg {
       <button class="tab active" role="tab" aria-selected="true" data-view="enseignant">Enseignant</button>
       <button class="tab" role="tab" aria-selected="false" data-view="recruteur">Recruteur</button>
       <button class="tab" role="tab" aria-selected="false" data-view="etudiant">Étudiant</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="rendus">Rendus</button>
       <div class="tab-line" aria-hidden="true"></div>
     </div>
     <button class="theme-btn" aria-label="Changer de thème">
@@ -1340,6 +1500,110 @@ svg.bloom-lg {
           </div>
         </article>
 
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════ VUE RENDUS ═══════════════════════════ -->
+  <section id="rendus" class="view" role="tabpanel">
+
+    <div class="spread hero">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> Presse &nbsp;·&nbsp; Livrables</div>
+      <div class="body-col">
+        <h1 class="hero-title">Rendus <svg class="bloom"><use href="#ico-bloom"/></svg></h1>
+        <p class="hero-sub">Ce qui a été publié, créé, filmé autour du projet. Les traces du stage, <em class="rose">hors code</em>.</p>
+        <div class="ornament">
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+          <svg class="bloom"><use href="#ico-bloom5"/></svg>
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">01</span> &nbsp;Réseaux sociaux</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">Sur les <em>réseaux</em></h2>
+
+          <h3 class="rendus-subhead"><svg class="bloom"><use href="#ico-bloom"/></svg> Enseignant &amp; Recruteur</h3>
+          <div class="rendus-piece">
+            <!-- Remplacer ce SVG par <img src="post-linkedin.png" alt="Post LinkedIn" class="rendus-img"> -->
+          
+            <img src="post-linkedin.png" alt="Post LinkedIn" class="rendus-img">
+              <g stroke="currentColor" stroke-width="1" opacity="0.45" fill="none">
+                <path d="M 0 24 L 0 0 L 24 0"/>
+                <path d="M 776 0 L 800 0 L 800 24"/>
+                <path d="M 0 476 L 0 500 L 24 500"/>
+                <path d="M 776 500 L 800 500 L 800 476"/>
+              </g>
+              <text x="400" y="256" text-anchor="middle" fill="currentColor" opacity="0.5" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="24">Post LinkedIn</text>
+            </svg>
+            <p class="rendus-caption">Capture du post publié sur LinkedIn. Présentation du projet à destination du monde professionnel.</p>
+            <p class="rendus-text">Un post rédigé pour présenter <em>U Cervu</em>, la démarche technique du stage et les livrables produits. Ton professionnel, contenu factuel (ce qui a été fait, ce qui a été appris, ce que l'équipe reprend).</p>
+            <a href="https://lnkd.in/p/e7st59Ba" class="rendus-link" target="_blank" rel="noopener">Voir le post <span class="arrow">→</span></a>
+          </div>
+
+          <h3 class="rendus-subhead"><svg class="bloom"><use href="#ico-bloom"/></svg> Étudiant</h3>
+          <div class="rendus-piece">
+            <!-- Remplacer ce SVG par <img src="insta-post.png" alt="Post Instagram" class="rendus-img"> -->
+            <img src="insta-post.png" alt="Post Instagram" class="rendus-img">
+              <g stroke="currentColor" stroke-width="1" opacity="0.45" fill="none">
+                <path d="M 0 24 L 0 0 L 24 0"/>
+                <path d="M 476 0 L 500 0 L 500 24"/>
+                <path d="M 0 601 L 0 625 L 24 625"/>
+                <path d="M 476 625 L 500 625 L 500 601"/>
+              </g>
+              <text x="250" y="317" text-anchor="middle" fill="currentColor" opacity="0.5" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="24">Post Instagram</text>
+            </svg>
+            <p class="rendus-text">Version étudiante du même récit, publiée sur Instagram. Ton plus direct, plus vécu, moins de jargon : les galères, les pivots, les petites victoires. Le stage raconté aux copains de promo.</p>
+            <a href="https://www.figma.com/design/hdIOrmxBAs7Qqr4d0yPcwl/post-insta-ucervu?node-id=0-1&t=CqvXgJ4q8mZXiLFf-1" class="rendus-link" target="_blank" rel="noopener">Voir sur Figma <span class="arrow">→</span></a>
+          </div>
+
+          <div class="rendus-piece">
+            <span class="poster-label">Poster</span>
+            <!-- Remplacer ce SVG par <img src="images/poster.jpg" alt="Poster U Cervu" class="rendus-img"> -->
+            <svg class="rendus-slot rendus-slot--poster" viewBox="0 0 500 700" preserveAspectRatio="xMidYMid meet" aria-label="Emplacement image Poster">
+              <g stroke="currentColor" stroke-width="1" opacity="0.45" fill="none">
+                <path d="M 0 24 L 0 0 L 24 0"/>
+                <path d="M 476 0 L 500 0 L 500 24"/>
+                <path d="M 0 676 L 0 700 L 24 700"/>
+                <path d="M 476 700 L 500 700 L 500 676"/>
+              </g>
+              <text x="250" y="355" text-anchor="middle" fill="currentColor" opacity="0.5" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-size="24">Poster A4</text>
+            </svg>
+            <p class="rendus-text">Poster synthétique du projet, format print. Une seule page pour raconter l'essentiel : le brief, le stack technique, le résultat, les enseignements. Pensé pour être affiché en salle ou glissé dans un book.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">02</span> &nbsp;Vidéo</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">En <em>mouvement</em></h2>
+          <p class="lede">Une courte capture de l'application en fonctionnement, du lancement de l'installateur au premier écran chargé.</p>
+
+          <!--
+            Format paysage (YouTube / capture) — utiliser class="video-wrap video-wrap--horizontal"
+            Format vertical (Reels / TikTok)   — utiliser class="video-wrap video-wrap--vertical"
+
+            Pour intégrer, remplacer <div class="video-placeholder">…</div> par :
+              <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="U Cervu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            ou pour une vidéo locale :
+              <video src="videos/demo.mp4" controls preload="metadata"></video>
+          -->
+          <div class="video-wrap video-wrap--horizontal">
+            <div class="video-placeholder">
+              <svg class="bloom"><use href="#ico-bloom"/></svg>
+              <span>Vidéo &nbsp;·&nbsp; à intégrer</span>
+            </div>
+          </div>
+          <p class="rendus-caption">Format paysage. Pour un format vertical (Reels, TikTok), passer la classe du conteneur à <em>video-wrap--vertical</em>.</p>
+        </div>
       </div>
     </div>
 
