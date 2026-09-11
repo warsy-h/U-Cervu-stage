@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projet U Cervu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap">
+
+<style>
+/* ── Tokens ─────────────────────────────────────────────────────── */
+:root {
+  --bg: #F8F6F1;
+  --ink: #1A1614;
+  --ink-2: #6B6560;
+  --ink-3: #B8B2AC;
+  --rule: #E5E0D8;
+  --rule-strong: #D4CFC6;
+  --accent: #C48B97;
+  --accent-deep: #A66E7A;
+  --nav-bg: rgba(248,246,241,0.92);
+  --font-serif: 'Cormorant Garamond', 'Sabon', 'Georgia', serif;
+  --font-sans: 'Inter', 'Helvetica Neue', system-ui, sans-serif;
+  --font-script: 'Great Vibes', cursive;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sakura-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23C48B97'%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(0 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(72 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(144 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(216 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(288 12 12)'/%3E%3Ccircle cx='12' cy='12' r='2.5' fill='%23A66E7A'/%3E%3C/g%3E%3C/svg%3E") 12 12, auto;
+}
+
+:root[data-theme="dark"] {
+  --bg: #2C2830;
+  --ink: #F0EBE4;
+  --ink-2: #9A928A;
+  --ink-3: #5A544E;
+  --rule: #2A2620;
+  --rule-strong: #3A3530;
+  --accent: #D4A0AD;
+  --accent-deep: #E0B3BF;
+  --nav-bg: #252329;
+  --sakura-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23D4A0AD'%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(0 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(72 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(144 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(216 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='4' ry='6' transform='rotate(288 12 12)'/%3E%3Ccircle cx='12' cy='12' r='2.5' fill='%23E0B3BF'/%3E%3C/g%3E%3C/svg%3E") 12 12, auto;
+}
+
+/* ── Base ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 18.5px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background 0.5s var(--ease), color 0.4s var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html, html * { cursor: var(--sakura-cursor) !important; }
+}
+
+a { color: var(--accent-deep); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 1px; transition: color 0.2s; }
+a:hover { color: var(--ink); }
+
+em.rose { color: var(--accent-deep); font-style: normal; font-weight: 500; }
+em { font-style: italic; }
+strong { font-weight: 600; color: var(--ink); }
+
+i.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.08em;
+  color: var(--ink);
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  display: inline-block;
+}
+
+/* ── Flower SVG marks (guaranteed to render everywhere) ─────────── */
+svg.bloom {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  vertical-align: -0.12em;
+  color: var(--accent);
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+svg.bloom-lg {
+  width: 1.4em;
+  height: 1.4em;
+  vertical-align: -0.25em;
+}
+
+/* ── Cursor trail (subtle, behind URL cursor) ──────────────────── */
+.cursor-bloom {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.bloom-dot {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bloom-dot svg { display: block; }
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-bloom { display: none; }
+}
+
+/* ── Navigation ─────────────────────────────────────────────────── */
+.topnav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: background 0.5s var(--ease);
+}
+
+.topnav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 22px 40px 18px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.mark {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: var(--ink);
+  letter-spacing: 0;
+  user-select: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.mark svg.bloom {
+  width: 0.85em;
+  height: 0.85em;
+  color: var(--accent);
+  vertical-align: -0.1em;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 0;
+  position: relative;
+}
+
+.tab {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: none;
+  border: none;
+  padding: 8px 22px;
+  white-space: nowrap;
+  transition: color 0.3s var(--ease);
+  position: relative;
+}
+
+.tab:hover { color: var(--ink); }
+.tab.active { color: var(--ink); }
+.tab:focus-visible { outline: none; color: var(--accent-deep); }
+
+.tab-line {
+  position: absolute;
+  bottom: -19px;
+  height: 1px;
+  background: var(--accent);
+  transition: left 0.5s var(--ease), width 0.5s var(--ease);
+}
+
+.theme-btn {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: color 0.3s var(--ease);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-btn svg.bloom {
+  width: 0.95em;
+  height: 0.95em;
+  color: var(--accent);
+}
+
+.theme-btn:hover { color: var(--accent-deep); }
+
+.theme-btn .label-light { display: none; }
+.theme-btn .label-dark { display: inline; }
+:root[data-theme="dark"] .theme-btn .label-light { display: inline; }
+:root[data-theme="dark"] .theme-btn .label-dark { display: none; }
+
+/* ── Views ──────────────────────────────────────────────────────── */
+.view { display: none; }
+.view.active {
+  display: block;
+  animation: fadeUp 0.7s var(--ease);
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Editorial grid ─────────────────────────────────────────────── */
+.spread {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 160px minmax(0, 660px) 1fr;
+  column-gap: 44px;
+}
+
+.spread--wide {
+  max-width: 1200px;
+  grid-template-columns: 160px minmax(0, 780px) 1fr;
+}
+
+.margin {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 0.55rem;
+  text-align: right;
+  white-space: nowrap;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.margin svg.bloom {
+  width: 1em;
+  height: 1em;
+  color: var(--accent);
+}
+
+.margin .num {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--accent);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.body-col { grid-column: 2; min-width: 0; }
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero {
+  padding: 190px 0 90px;
+}
+
+.hero .margin { padding-top: 1.5rem; }
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(3.2rem, 7.5vw, 5.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  text-wrap: balance;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--accent-deep);
+  font-weight: 400;
+}
+
+.hero-title svg.bloom {
+  width: 0.55em;
+  height: 0.55em;
+  color: var(--accent);
+  vertical-align: 0.35em;
+  margin: 0 0.15em;
+  opacity: 0.85;
+}
+
+.hero-sub {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1.35rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 42ch;
+}
+
+.hero-meta {
+  margin-top: 3rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  gap: 2.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  flex-wrap: wrap;
+}
+
+.hero-meta span strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.15rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  margin-top: 8px;
+}
+
+/* Ornament between hero and first passage */
+.ornament {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.2rem 0 2rem;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+.ornament svg.bloom {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: var(--accent);
+}
+
+.ornament .center {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* ── Passages ───────────────────────────────────────────────────── */
+.passage {
+  padding: 3rem 0 3rem;
+  border-top: 1px solid var(--rule);
+}
+
+.passage:first-of-type { border-top: none; }
+
+.passage-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 1.8rem;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.passage-title em {
+  font-style: italic;
+  color: var(--accent-deep);
+  font-weight: 400;
+}
+
+.lede {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 1.8rem;
+  font-style: italic;
+}
+
+.para {
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 1.3rem;
+  line-height: 1.85;
+  font-size: 1.05rem;
+}
+
+.para code, .lede code, .brief-list li code, .chapter p code, .story-chap p code {
+  font-family: 'JetBrains Mono', 'Menlo', monospace;
+  font-size: 0.82em;
+  color: var(--accent-deep);
+  font-weight: 500;
+  font-style: normal;
+  padding: 0 3px;
+  background: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+}
+
+/* ── Brief list ─────────────────────────────────────────────────── */
+.brief-list {
+  list-style: none;
+  counter-reset: brief;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
+
+.brief-list li {
+  counter-increment: brief;
+  padding: 1.4rem 0 1.4rem 3.4rem;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.72;
+}
+
+.brief-list li:first-child { border-top: 1px solid var(--rule); }
+
+.brief-list li::before {
+  content: counter(brief, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 1.55rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* ── Chapters ───────────────────────────────────────────────────── */
+.chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 1rem;
+}
+
+.chapter {
+  display: grid;
+  grid-template-columns: 66px 1fr;
+  column-gap: 24px;
+  padding-top: 1.7rem;
+  border-top: 1px solid var(--rule);
+}
+
+.chapter:first-child { border-top: none; padding-top: 0; }
+
+.chapter-num {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  padding-top: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.chapter-num svg.bloom {
+  width: 0.42em;
+  height: 0.42em;
+  color: var(--accent);
+  opacity: 0.6;
+  vertical-align: 0.2em;
+}
+
+.chapter h3 {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.chapter-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.4rem;
+}
+
+.chapter p {
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.85;
+  font-size: 1.05rem;
+}
+
+/* ── Comparison ─────────────────────────────────────────────────── */
+.compare {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.2rem;
+}
+
+.compare-head {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  column-gap: 40px;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  column-gap: 40px;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+
+.compare-row:last-child { border-bottom: 1px solid var(--ink); }
+
+.compare-left {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.compare-right {
+  font-weight: 400;
+  color: var(--ink);
+  font-size: 1.06rem;
+  line-height: 1.72;
+}
+
+.compare-right svg.bloom {
+  width: 0.85em;
+  height: 0.85em;
+  color: var(--accent);
+  margin-right: 12px;
+  vertical-align: -0.1em;
+}
+
+.compare-right .mark-pivot {
+  color: var(--accent-deep);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+/* ── Learnings ──────────────────────────────────────────────────── */
+.learnings {
+  list-style: none;
+  counter-reset: learn;
+  margin-top: 1.2rem;
+}
+
+.learnings li {
+  counter-increment: learn;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  column-gap: 20px;
+  align-items: baseline;
+}
+
+.learnings li:first-child { border-top: 1px solid var(--rule); }
+
+.learnings li::before {
+  content: counter(learn);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.7rem;
+  color: var(--accent);
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* ── Profile columns ────────────────────────────────────────────── */
+.profile-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 40px;
+  margin-top: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+
+.profile-cols h4 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--accent-deep);
+  margin-bottom: 0.7rem;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-cols h4 svg.bloom {
+  width: 0.75em;
+  height: 0.75em;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+.profile-cols p {
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+/* ── Étudiant story ─────────────────────────────────────────────── */
+.story {
+  padding-top: 2rem;
+}
+
+.story-chap {
+  padding: 5.5rem 0 3.5rem;
+  position: relative;
+  border-top: 1px solid var(--rule);
+}
+
+.story-chap:first-of-type { border-top: none; padding-top: 2rem; }
+
+.story-numeral {
+  position: absolute;
+  top: 3rem;
+  right: -0.6rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(9rem, 22vw, 16rem);
+  line-height: 0.8;
+  color: var(--accent);
+  opacity: 0.09;
+  z-index: 0;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -0.03em;
+}
+
+.story-chap-inner { position: relative; z-index: 1; }
+
+.story-chap .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.8rem;
+}
+
+.story-chap .eyebrow svg.bloom {
+  width: 0.95em;
+  height: 0.95em;
+  color: var(--accent);
+}
+
+.story-chap h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.5vw, 2.7rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  max-width: 20ch;
+}
+
+.story-chap h3 em {
+  font-style: italic;
+  color: var(--accent-deep);
+  font-weight: 400;
+}
+
+.story-chap p {
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.85;
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.story-chap p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-size: 3.6rem;
+  font-weight: 500;
+  float: left;
+  line-height: 0.85;
+  padding: 0.1em 0.14em 0 0;
+  color: var(--accent-deep);
+  font-style: italic;
+}
+
+/* Pull quote */
+.pull {
+  padding: 1.6rem 0 1.6rem 2.2rem;
+  border-left: 1px solid var(--accent);
+  margin: 2.8rem 0 2.8rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.4vw, 1.85rem);
+  line-height: 1.35;
+  color: var(--ink);
+  max-width: 42ch;
+  position: relative;
+}
+
+.pull .pull-mark {
+  display: inline-block;
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--accent);
+  fill: currentColor;
+  margin-bottom: 0.6rem;
+}
+
+/* Cascade steps */
+.cascade {
+  margin: 2rem 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.cascade li {
+  padding: 1.2rem 0 1.2rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 400;
+  color: var(--ink);
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  column-gap: 16px;
+  align-items: baseline;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.cascade li .step-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+/* ── Petals & noise ─────────────────────────────────────────────── */
+.petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  border-radius: 60% 0 60% 0;
+  background: var(--accent);
+  opacity: 0.05;
+  animation: drift linear infinite;
+}
+
+.p1 { width: 8px; height: 8px; left: 10%; animation-duration: 42s; }
+.p2 { width: 6px; height: 6px; left: 48%; animation-duration: 48s; animation-delay: 12s; }
+.p3 { width: 9px; height: 9px; left: 82%; animation-duration: 36s; animation-delay: 20s; }
+.p4 { width: 5px; height: 5px; left: 26%; animation-duration: 52s; animation-delay: 30s; }
+.p5 { width: 7px; height: 7px; left: 66%; animation-duration: 44s; animation-delay: 6s; }
+
+@keyframes drift {
+  0% { top: -14px; transform: rotate(0deg) translateX(0); opacity: 0; }
+  8% { opacity: 0.05; }
+  50% { transform: rotate(180deg) translateX(22px); }
+  92% { opacity: 0.05; }
+  100% { top: 105vh; transform: rotate(360deg) translateX(-16px); opacity: 0; }
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+  opacity: 0.012;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* ── Colophon ───────────────────────────────────────────────────── */
+.colophon {
+  max-width: 1080px;
+  margin: 4rem auto 0;
+  padding: 6rem 40px 3rem;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 160px minmax(0, 660px) 1fr;
+  column-gap: 44px;
+}
+
+.colophon-body {
+  grid-column: 2;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+
+.colophon-body em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--accent-deep);
+  font-weight: 500;
+}
+
+.colophon-body svg.bloom {
+  width: 0.85em;
+  height: 0.85em;
+  color: var(--accent);
+  margin: 0 8px;
+  vertical-align: -0.1em;
+}
+
+.colophon-end {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.4rem;
+  padding-top: 3rem;
+  opacity: 0.6;
+}
+
+.colophon-end svg.bloom {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--accent);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .topnav-inner { padding: 18px 24px 14px; flex-wrap: wrap; gap: 10px; }
+  .spread, .spread--wide, .colophon {
+    grid-template-columns: 1fr;
+    padding: 0 24px;
+  }
+  .margin {
+    text-align: left;
+    justify-content: flex-start;
+    padding-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .body-col, .colophon-body { grid-column: 1; }
+  .hero { padding: 150px 0 60px; }
+  .hero-meta { flex-direction: column; gap: 1.2rem; }
+  .colophon { padding: 3rem 24px; margin-top: 2rem; }
+  .chapter { grid-template-columns: 50px 1fr; column-gap: 16px; }
+  .chapter-num { font-size: 2.2rem; }
+  .compare-head, .compare-row { grid-template-columns: 1fr; column-gap: 0; row-gap: 8px; }
+  .compare-row { padding: 1.2rem 0; }
+  .compare-left { font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  .profile-cols { grid-template-columns: 1fr; row-gap: 2rem; }
+  .story-numeral { font-size: clamp(7rem, 30vw, 12rem); opacity: 0.06; right: -0.4rem; }
+  .learnings li { grid-template-columns: 42px 1fr; column-gap: 14px; }
+  .cascade li { grid-template-columns: 44px 1fr; column-gap: 12px; }
+}
+
+@media (max-width: 500px) {
+  body { font-size: 17.5px; }
+  .topnav-inner { padding: 14px 18px 12px; }
+  .mark { font-size: 1.1rem; }
+  .tab { font-size: 0.72rem; padding: 6px 12px; letter-spacing: 0.14em; }
+  .theme-btn { font-size: 0.72rem; }
+  .spread, .spread--wide, .colophon { padding: 0 20px; }
+  .hero { padding: 130px 0 40px; }
+  .hero-title { font-size: clamp(2.6rem, 11vw, 3.6rem); }
+  .hero-sub { font-size: 1.15rem; }
+  .passage { padding: 2.4rem 0; }
+  .passage-title { font-size: 1.65rem; }
+  .lede { font-size: 1.3rem; }
+  .story-chap h3 { font-size: 2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petal { animation: none; display: none; }
+  .view.active { animation: none; }
+  .cursor-bloom { display: none; }
+}
+</style>
+
+<!-- SVG symbol definitions: a stylised flower that renders on every browser -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <defs>
+    <symbol id="ico-bloom" viewBox="0 0 16 16">
+      <g fill="currentColor">
+        <ellipse cx="8" cy="3" rx="0.95" ry="3"/>
+        <ellipse cx="8" cy="3" rx="0.95" ry="3" transform="rotate(45 8 8)"/>
+        <ellipse cx="8" cy="3" rx="0.95" ry="3" transform="rotate(90 8 8)"/>
+        <ellipse cx="8" cy="3" rx="0.95" ry="3" transform="rotate(135 8 8)"/>
+        <ellipse cx="8" cy="3" rx="0.95" ry="3" transform="rotate(180 8 8)"/>
+        <ellipse cx="8" cy="3" rx="0.95" ry="3" transform="rotate(225 8 8)"/>
+        <ellipse cx="8" cy="3" rx="0.95" ry="3" transform="rotate(270 8 8)"/>
+        <ellipse cx="8" cy="3" rx="0.95" ry="3" transform="rotate(315 8 8)"/>
+        <circle cx="8" cy="8" r="1"/>
+      </g>
+    </symbol>
+    <symbol id="ico-bloom5" viewBox="0 0 16 16">
+      <g fill="currentColor">
+        <ellipse cx="8" cy="3.5" rx="2.3" ry="4"/>
+        <ellipse cx="8" cy="3.5" rx="2.3" ry="4" transform="rotate(72 8 8)"/>
+        <ellipse cx="8" cy="3.5" rx="2.3" ry="4" transform="rotate(144 8 8)"/>
+        <ellipse cx="8" cy="3.5" rx="2.3" ry="4" transform="rotate(216 8 8)"/>
+        <ellipse cx="8" cy="3.5" rx="2.3" ry="4" transform="rotate(288 8 8)"/>
+        <circle cx="8" cy="8" r="1.5" fill-opacity="0.6"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Decorative layers -->
+<div class="noise" aria-hidden="true"></div>
+<div class="petals" aria-hidden="true">
+  <div class="petal p1"></div>
+  <div class="petal p2"></div>
+  <div class="petal p3"></div>
+  <div class="petal p4"></div>
+  <div class="petal p5"></div>
+</div>
+
+<!-- Cursor trail -->
+<div class="cursor-bloom" aria-hidden="true">
+  <div class="bloom-dot" id="bd0">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <g opacity="0.55">
+        <ellipse cx="10" cy="5.5" rx="3.2" ry="5" fill="currentColor" transform="rotate(0 10 10)"/>
+        <ellipse cx="10" cy="5.5" rx="3.2" ry="5" fill="currentColor" transform="rotate(72 10 10)"/>
+        <ellipse cx="10" cy="5.5" rx="3.2" ry="5" fill="currentColor" transform="rotate(144 10 10)"/>
+        <ellipse cx="10" cy="5.5" rx="3.2" ry="5" fill="currentColor" transform="rotate(216 10 10)"/>
+        <ellipse cx="10" cy="5.5" rx="3.2" ry="5" fill="currentColor" transform="rotate(288 10 10)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="bloom-dot" id="bd1">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <g opacity="0.38">
+        <ellipse cx="6" cy="3" rx="2" ry="3" fill="currentColor" transform="rotate(0 6 6)"/>
+        <ellipse cx="6" cy="3" rx="2" ry="3" fill="currentColor" transform="rotate(72 6 6)"/>
+        <ellipse cx="6" cy="3" rx="2" ry="3" fill="currentColor" transform="rotate(144 6 6)"/>
+        <ellipse cx="6" cy="3" rx="2" ry="3" fill="currentColor" transform="rotate(216 6 6)"/>
+        <ellipse cx="6" cy="3" rx="2" ry="3" fill="currentColor" transform="rotate(288 6 6)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="bloom-dot" id="bd2">
+    <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
+      <circle cx="3.5" cy="3.5" r="3" fill="currentColor" opacity="0.28"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ── Navigation ────────────────────────────────────────────────── -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <span class="mark">U <svg class="bloom"><use href="#ico-bloom"/></svg> Cervu</span>
+    <div class="nav-tabs" role="tablist">
+      <button class="tab active" role="tab" aria-selected="true" data-view="enseignant">Enseignant</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="recruteur">Recruteur</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="etudiant">Étudiant</button>
+      <div class="tab-line" aria-hidden="true"></div>
+    </div>
+    <button class="theme-btn" aria-label="Changer de thème">
+      <svg class="bloom"><use href="#ico-bloom"/></svg><span class="label-dark">Sombre</span><span class="label-light">Clair</span>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════ VUE ENSEIGNANT ═══════════════════════════ -->
+  <section id="enseignant" class="view active" role="tabpanel">
+
+    <div class="spread hero">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> Rapport &nbsp;·&nbsp; 2026</div>
+      <div class="body-col">
+        <h1 class="hero-title">Projet <em>U&nbsp;Cervu</em> <svg class="bloom"><use href="#ico-bloom"/></svg></h1>
+        <p class="hero-sub">Transformer un site web éducatif sur le cerf en application desktop <i class="serif">Electron</i>, seule, sans IA, avec la documentation pour boussole.</p>
+        <div class="hero-meta">
+          <span>Durée<strong>8 semaines</strong></span>
+          <span>Stack<strong>Electron · PHP · Laravel · SQLite</strong></span>
+          <span>Livrable<strong>Installateur Windows &amp; MacOS</strong></span>
+        </div>
+        <div class="ornament">
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+          <svg class="bloom"><use href="#ico-bloom5"/></svg>
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">01</span> &nbsp;Le brief</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">Ce qu'on attendait <em>de moi</em></h2>
+          <p class="lede">Un vieux projet dans un tiroir. Un framework que personne dans l'équipe ne connaît. Une consigne : <em class="rose">pas d'IA</em>.</p>
+          <ul class="brief-list">
+            <li>Reprendre le site web <strong>« U Cervu »</strong> et le transformer en application desktop avec <code>Electron</code>.</li>
+            <li>Apprendre Electron uniquement via la documentation officielle. <em class="rose">Pas d'IA.</em></li>
+            <li>Intégrer un serveur <code>PHP</code> complet et un environnement de base de données <code>MySQL</code>.</li>
+            <li>Documenter l'intégralité du processus pour que l'équipe puisse reprendre le projet.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">02</span> &nbsp;Le parcours</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">Ce que j'ai fait, <em>étape par étape</em></h2>
+          <div class="chapters">
+            <div class="chapter">
+              <div class="chapter-num">一 <svg class="bloom"><use href="#ico-bloom"/></svg></div>
+              <div>
+                <span class="chapter-label">Prototype</span>
+                <h3>Une page qui s'affiche</h3>
+                <p>J'ai lu toute la documentation, chaque rubrique, chaque détail. J'ai appris à mes dépens qu'en sauter une peut coûter des heures. Premier objectif atteint : une app qui se lance avec <code>npm run start</code> et affiche une page.</p>
+              </div>
+            </div>
+            <div class="chapter">
+              <div class="chapter-num">二 <svg class="bloom"><use href="#ico-bloom"/></svg></div>
+              <div>
+                <span class="chapter-label">Intégration PHP</span>
+                <h3>La galère</h3>
+                <p>Electron n'a pas été conçu pour du <code>PHP</code>. Aucune documentation nulle part. J'ai écumé Reddit, trouvé un dépôt GitHub <em>Electron-4-PHP</em> sans mode d'emploi clair (vous connaissez les développeurs ?). Première tentative : <strong>écran noir</strong>, plus l'invite de commande qui se lance en arrière-plan. Le lendemain, mal de crâne encore là, nouvelle approche, bouclé en une heure.</p>
+              </div>
+            </div>
+            <div class="chapter">
+              <div class="chapter-num">三 <svg class="bloom"><use href="#ico-bloom"/></svg></div>
+              <div>
+                <span class="chapter-label">Base de données</span>
+                <h3>Du lourd au léger</h3>
+                <p><code>MySQL</code> testé avec les binaires embarqués : fonctionnel mais beaucoup trop lourd pour compiler. En découvrant <code>Laravel</code>, j'ai trouvé <code>SQLite</code>, une BDD embarquée légère. Tout s'est enchaîné avec fluidité.</p>
+              </div>
+            </div>
+            <div class="chapter">
+              <div class="chapter-num">四 <svg class="bloom"><use href="#ico-bloom"/></svg></div>
+              <div>
+                <span class="chapter-label">Livraison</span>
+                <h3>L'exécutable final</h3>
+                <p>L'app marchait mais dépendait de ses fichiers. Rendue indépendante via le packing <code>npm</code> : <strong>2 minutes de latence</strong> au lancement, <strong>1,9 Go</strong> de poids. Comment vous dire que je saturais. Solution finale : un installateur. L'application se lance enfin rapidement et sans problème.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">03</span> &nbsp;Livraison</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">Le résultat</h2>
+          <p class="lede">Application desktop fonctionnelle avec installateur Windows et MacOS, embarquant <code>Laravel</code> et <code>SQLite</code>, accompagnée d'une documentation technique complète pour la reprise par l'équipe. <em class="rose">Il en a fallu des flops pour réussir</em>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread spread--wide">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">04</span> &nbsp;Attendus</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">Ce qui a tenu, <em>ce qui a bougé</em></h2>
+          <div class="compare">
+            <div class="compare-head">
+              <span>Attendu</span>
+              <span>Résultat</span>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Apprendre Electron via la doc</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Documentation lue intégralement + adaptation créative</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Intégrer un serveur PHP</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Via Electron-4-PHP et résolution des blocages</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Base de données MySQL</div>
+              <div class="compare-right"><span class="mark-pivot">Pivot</span>Vers SQLite, plus adapté à l'embarquement</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Application autonome</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Via installateur, solution au poids et à la latence</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Documenter le processus</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Documentation technique complète livrée</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Pas d'IA</div>
+              <div class="compare-right"><span class="mark-pivot">Nuance</span>Respecté au maximum, utilisée en dernier recours avec contexte</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">05</span> &nbsp;Enseignements</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">Ce que <em>j'en retiens</em></h2>
+          <ol class="learnings">
+            <li>Lire une documentation en entier avant de coder. Chaque détail compte, je l'ai appris à mes dépens.</li>
+            <li>Quand la doc n'existe pas, il y a des forums, des dépôts, des devs qui ont galéré avant toi.</li>
+            <li>Savoir pivoter quand ça bloque : MySQL vers SQLite, exécutable vers installateur.</li>
+            <li>L'IA est un outil, pas une béquille. Je lui ai donné le contexte de ce que j'avais déjà lu, pas l'inverse.</li>
+            <li>La persévérance paie : il en a fallu des flops pour réussir.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════ VUE RECRUTEUR ═══════════════════════════ -->
+  <section id="recruteur" class="view" role="tabpanel">
+
+    <div class="spread hero">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> Profil &nbsp;·&nbsp; Junior</div>
+      <div class="body-col">
+        <h1 class="hero-title">Développeuse <em>fullstack</em> <svg class="bloom"><use href="#ico-bloom"/></svg></h1>
+        <p class="hero-sub"><i class="serif">PHP · Laravel · Electron.</i> Ce que les fiches de poste demandent, ce que j'ai déjà livré, ligne par ligne.</p>
+        <div class="hero-meta">
+          <span>Références<strong>Indeed &amp; Easy Partner, 2026</strong></span>
+          <span>Poste ciblé<strong>Développeur·se junior PHP / Laravel</strong></span>
+        </div>
+        <div class="ornament">
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+          <svg class="bloom"><use href="#ico-bloom5"/></svg>
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread spread--wide">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">i</span> &nbsp;Le match</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">Ils demandent, <em>j'ai fait</em></h2>
+          <p class="lede">Six compétences réellement demandées par des offres d'emploi juniors, mises en regard de ce que j'ai concrètement livré pendant ce stage.</p>
+          <div class="compare">
+            <div class="compare-head">
+              <span>Ils demandent</span>
+              <span>Ce que j'ai fait</span>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">PHP backend, POO</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Intégré PHP dans <i class="serif">Electron</i>, un cas non documenté nulle part. Résolu seule.</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Laravel, MVC, authentification, sessions</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Déployé Laravel + SQLite embarqué dans une app desktop, un environnement que le framework ne cible pas.</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Bases de données SQL, requêtes, modélisation</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>MySQL testé puis migré vers SQLite. Diagnostic du problème, choix technique justifié, implémentation.</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">HTML, CSS, JavaScript, intégration UI</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Site source maîtrisé, frontend intégré dans l'écosystème Electron.</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Autonomie, documentation technique</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Seule sur le projet, pas de formation, pas d'accompagnement. Documentation complète livrée à l'équipe.</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-left">Résolution de problèmes, esprit analytique</div>
+              <div class="compare-right"><svg class="bloom"><use href="#ico-bloom"/></svg>Écran noir <i class="serif">→</i> nouvelle approche. MySQL <i class="serif">→</i> SQLite. 1,9 Go <i class="serif">→</i> installateur. Chaque blocage, un pivot.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> <span class="num">ii</span> &nbsp;Profil</div>
+      <div class="body-col">
+        <div class="passage">
+          <h2 class="passage-title">En <em>trois mots</em></h2>
+          <div class="profile-cols">
+            <div>
+              <h4><svg class="bloom"><use href="#ico-bloom"/></svg> Résolutive</h4>
+              <p>Chaque obstacle technique (écran noir, poids excessif, latence) a été transformé en pivot vers une solution meilleure que la demande originale.</p>
+            </div>
+            <div>
+              <h4><svg class="bloom"><use href="#ico-bloom"/></svg> Autodidacte</h4>
+              <p>D'un framework totalement inconnu à une application fonctionnelle livrée, en autonomie complète et sans formation.</p>
+            </div>
+            <div>
+              <h4><svg class="bloom"><use href="#ico-bloom"/></svg> Tenace</h4>
+              <p>Échecs répétés, reprises à zéro, technologies abandonnées puis remplacées. Sans jamais lâcher le projet ni baisser en qualité.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════ VUE ÉTUDIANT ═══════════════════════════ -->
+  <section id="etudiant" class="view" role="tabpanel">
+
+    <div class="spread hero">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> Récit &nbsp;·&nbsp; À vif</div>
+      <div class="body-col">
+        <h1 class="hero-title">Mon Stage <br> (et mes maux de crâne) <br> sur <em>Electron</em> <svg class="bloom"><use href="#ico-bloom"/></svg></h1>
+        <p class="hero-sub">La vraie vie d'un stage de dev : les écrans noirs, les forums poussiéreux, les migrations de dernière minute, et pourtant ? <em class="rose">ça marche</em>.</p>
+        <div class="ornament">
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+          <svg class="bloom"><use href="#ico-bloom5"/></svg>
+          <svg class="bloom"><use href="#ico-bloom"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> Chapitres</div>
+      <div class="body-col story">
+
+        <article class="story-chap">
+          <span class="story-numeral">i</span>
+          <div class="story-chap-inner">
+            <span class="eyebrow"><svg class="bloom"><use href="#ico-bloom"/></svg>Chapitre premier</span>
+            <h3>Le projet tombé <em>du ciel</em></h3>
+            <p>Imagine : tu arrives en stage, personne ne sait quoi te donner. Et puis ton tuteur se souvient d'un vieux projet dans un tiroir. Un site web éducatif sur le cerf, <em>U Cervu</em>, à transformer en application de bureau. Avec un framework que personne dans la boîte ne connaît : <code>Electron</code>.</p>
+            <p>La consigne : <i class="serif">« Pas d'IA. Tu apprends avec la doc. »</i></p>
+          </div>
+        </article>
+
+        <article class="story-chap">
+          <span class="story-numeral">ii</span>
+          <div class="story-chap-inner">
+            <span class="eyebrow"><svg class="bloom"><use href="#ico-bloom"/></svg>Chapitre deux</span>
+            <h3>Premiers pas <em>dans le noir</em></h3>
+            <p>J'ai lu la documentation. Toute la documentation. Chaque page, chaque ligne, parce que j'ai appris à mes dépens que sauter un détail peut te coûter des heures de débogage plus tard. Mon premier objectif était simple : faire apparaître une phrase sur une page blanche quand je lance l'app.</p>
+            <p>Et ça a marché. Petite victoire, grande motivation.</p>
+          </div>
+        </article>
+
+        <article class="story-chap">
+          <span class="story-numeral">iii</span>
+          <div class="story-chap-inner">
+            <span class="eyebrow"><svg class="bloom"><use href="#ico-bloom"/></svg>Chapitre trois</span>
+            <h3>L'écran <em>noir</em></h3>
+            <p>Ensuite il fallait intégrer <code>PHP</code>. Spoiler : Electron n'a pas été fait pour ça. Zéro doc. J'ai écumé Reddit, trouvé un dépôt GitHub poussiéreux appelé <em>Electron-4-PHP</em>, sans instructions claires. J'ai assemblé les pièces du puzzle toute seule.</p>
+            <div class="pull"><svg class="bloom pull-mark"><use href="#ico-bloom5"/></svg>Écran noir. L'invite de commande qui se lance en arrière-plan. Le combo de la défaite.</div>
+            <p>Le lendemain matin, mal de crâne encore là, j'ai tout repris à zéro avec une approche différente. En une heure, c'était réglé. Une heure. Après des heures de galère la veille.</p>
+          </div>
+        </article>
+
+        <article class="story-chap">
+          <span class="story-numeral">iv</span>
+          <div class="story-chap-inner">
+            <span class="eyebrow"><svg class="bloom"><use href="#ico-bloom"/></svg>Chapitre quatre</span>
+            <h3>La <em>cascade</em></h3>
+            <p>Un problème en résolvait un autre. Un pivot en appelait un nouveau. Voici l'enchaînement, dans l'ordre :</p>
+            <ol class="cascade">
+              <li><span class="step-num">i</span><span>MySQL embarqué, trop lourd. On laisse tomber.</span></li>
+              <li><span class="step-num">ii</span><span>Je découvre Laravel et SQLite. Ça passe du premier coup.</span></li>
+              <li><span class="step-num">iii</span><span>L'app dépend de ses fichiers. Je la rends indépendante. Deux minutes pour démarrer.</span></li>
+              <li><span class="step-num">iv</span><span>Le poids ? Un giga-neuf pour un petit site.</span></li>
+              <li><span class="step-num">v</span><span>Solution finale : un installateur. Et là, enfin, tout roule.</span></li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="story-chap">
+          <span class="story-numeral">v</span>
+          <div class="story-chap-inner">
+            <span class="eyebrow"><svg class="bloom"><use href="#ico-bloom"/></svg>Chapitre cinq</span>
+            <h3>Ce que <em>j'en retiens</em></h3>
+            <p>Il en a fallu des flops pour réussir. Mais chaque flop m'a appris quelque chose : lire les docs, chercher partout, pivoter quand ça bloque, et surtout ne jamais lâcher.</p>
+            <div class="pull"><svg class="bloom pull-mark"><use href="#ico-bloom5"/></svg>Si tu te dis que t'y arriveras jamais, c'est normal. Moi aussi je me le suis dit. Plusieurs fois par jour. Et pourtant, l'app tourne.</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="colophon">
+  <div class="margin"><svg class="bloom"><use href="#ico-bloom"/></svg> Sisi2b</div>
+  <div class="colophon-body">
+    <em>Siwar</em>, stage 2026 <svg class="bloom"><use href="#ico-bloom"/></svg> Projet <em>U Cervu</em>. Composé à la main (et avec l'aide de Claude). Aucune carte n'a été maltraitée dans la fabrication de cette page.
+    <div class="colophon-end">
+      <svg class="bloom"><use href="#ico-bloom"/></svg>
+      <svg class="bloom"><use href="#ico-bloom5"/></svg>
+      <svg class="bloom"><use href="#ico-bloom"/></svg>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var tabs = document.querySelectorAll('.tab');
+  var views = document.querySelectorAll('.view');
+  var line = document.querySelector('.tab-line');
+
+  function moveLine() {
+    var active = document.querySelector('.tab.active');
+    if (!active || !line) return;
+    line.style.left = active.offsetLeft + 'px';
+    line.style.width = active.offsetWidth + 'px';
+  }
+
+  moveLine();
+  window.addEventListener('resize', moveLine);
+  window.addEventListener('load', moveLine);
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      moveLine();
+      views.forEach(function(v) { v.classList.remove('active'); });
+      document.getElementById(this.dataset.view).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  var isDark = false;
+  try {
+    var saved = localStorage.getItem('ucervu-theme');
+    if (saved === 'dark') { isDark = true; }
+  } catch(e) {}
+  if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+
+  document.querySelector('.theme-btn').addEventListener('click', function() {
+    isDark = !isDark;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    try { localStorage.setItem('ucervu-theme', isDark ? 'dark' : 'light'); } catch(e) {}
+  });
+
+  var hasHover = window.matchMedia('(hover: hover)').matches;
+  if (!hasHover) return;
+
+  var dots = [
+    document.getElementById('bd0'),
+    document.getElementById('bd1'),
+    document.getElementById('bd2')
+  ];
+  if (!dots[0] || !dots[1] || !dots[2]) return;
+
+  function setColor() {
+    var c = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    dots.forEach(function(d) { d.style.color = c; });
+  }
+  setColor();
+
+  var observer = new MutationObserver(function() {
+    setTimeout(setColor, 50);
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  var mx = -80, my = -80;
+  var pos = [ {x:-80,y:-80}, {x:-80,y:-80}, {x:-80,y:-80} ];
+  var speeds = [0.14, 0.08, 0.045];
+  var offsets = [ {x:-10,y:-10}, {x:-6,y:-6}, {x:-3.5,y:-3.5} ];
+  var rotations = [0, 0, 0];
+
+  document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseleave', function() { mx = -80; my = -80; });
+
+  function tick() {
+    for (var i = 0; i < dots.length; i++) {
+      var dx = mx - pos[i].x;
+      var dy = my - pos[i].y;
+      pos[i].x += dx * speeds[i];
+      pos[i].y += dy * speeds[i];
+      rotations[i] += (i + 1) * 0.25;
+      dots[i].style.transform = 'translate(' + (pos[i].x + offsets[i].x) + 'px,' + (pos[i].y + offsets[i].y) + 'px) rotate(' + rotations[i] + 'deg)';
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+</script>
+
+</html>
